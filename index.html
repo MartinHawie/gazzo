@@ -16,7 +16,9 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden}
-::selection{background:var(--red);color:#fff}
+::selection{background:transparent}
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
 
 /* capas de fondo */
 #cells{position:fixed;inset:0;z-index:0;pointer-events:none}
@@ -485,6 +487,10 @@ footer .tiny{margin-top:40px;font-size:12px;color:var(--mute);letter-spacing:.2e
   }
   requestAnimationFrame(draw);
 })();
+
+/* protección: sin copiar, sin botón derecho, sin arrastrar */
+['contextmenu','copy','cut','dragstart','selectstart'].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault()));
+document.addEventListener('keydown',e=>{const k=(e.key||'').toLowerCase();if((e.ctrlKey||e.metaKey)&&['c','x','a','s','u','p'].includes(k))e.preventDefault()});
 
 /* revelado y contadores */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');e.target.querySelectorAll('.count').forEach(count);if(e.target.classList.contains('count'))count(e.target);io.unobserve(e.target)}}),{threshold:.18});
